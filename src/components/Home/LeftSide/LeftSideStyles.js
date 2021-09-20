@@ -5,7 +5,7 @@ import cardBg from '../../../images/card-bg.svg';
 import photo from '../../../images/photo.svg';
 
 export const Container = styled.div`
-  grid-area: 'leftside';
+  grid-area: leftside;
 `;
 
 export const ArtCard = styled.div`
