@@ -67,7 +67,7 @@ const Main = () => {
           </ShareActor>
           <Description>Description</Description>
           <ShareImg>
-            <a href="#">
+            <a href="/">
               <img
                 src="https://images.unsplash.com/photo-1576073732976-69755474b002?ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8cHJldHR5JTIwZmxvd2Vyc3xlbnwwfHwwfHw%3D&ixlib=rb-1.2.1&w=1000&q=80"
                 alt=""
