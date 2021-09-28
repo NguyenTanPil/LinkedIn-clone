@@ -1,53 +1,36 @@
+import { signInWithPopup, onAuthStateChanged } from 'firebase/auth';
+import { useCallback, useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import { useHistory } from 'react-router';
+import { setUserLoginDetial } from '../../features/user/userSlice';
+import { auth, provider } from '../../firebase';
+import google from '../../images/google.svg';
+import heroLogo from '../../images/login-hero.svg';
+import logo from '../../images/login-logo.svg';
 import {
   Container,
-  Nav,
-  Logo,
-  Join,
-  SignIn,
-  Section,
-  Hero,
   Form,
   Google,
+  Hero,
+  Join,
+  Logo,
+  Nav,
+  Section,
+  SignIn,
 } from './LoginStyles';
-import logo from '../../images/login-logo.svg';
-import heroLogo from '../../images/login-hero.svg';
-import google from '../../images/google.svg';
-
-import { signInWithPopup, onAuthStateChanged, signOut } from 'firebase/auth';
-import { auth, provider } from '../../firebase';
-import {
-  selectUser,
-  setUserLoginDetial,
-  setSignOutState,
-} from '../../features/user/userSlice';
-import { useCallback, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { useHistory } from 'react-router';
 
 const Login = () => {
   const dispatch = useDispatch();
   const history = useHistory();
-  const { name: userName } = useSelector(selectUser);
 
   const handleAuth = () => {
-    if (!userName) {
-      signInWithPopup(auth, provider)
-        .then((result) => {
-          setUser(result.user);
-        })
-        .catch((error) => {
-          console.log(error.message);
-        });
-    } else {
-      signOut(auth)
-        .then(() => {
-          dispatch(setSignOutState());
-          history.push('/');
-        })
-        .catch((error) => {
-          console.log(error.message);
-        });
-    }
+    signInWithPopup(auth, provider)
+      .then((result) => {
+        setUser(result.user);
+      })
+      .catch((error) => {
+        console.log(error.message);
+      });
   };
 
   const setUser = useCallback(
@@ -71,7 +54,7 @@ const Login = () => {
         history.push('/home');
       }
     });
-  }, [userName, history, setUser]);
+  }, [history, setUser]);
 
   return (
     <Container>

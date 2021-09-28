@@ -7,10 +7,14 @@ import Home from './components/Home';
 function App() {
   return (
     <Router>
-      <Header />
       <Switch>
-        <Route exact path="/login" component={Login} />
-        <Route path="/" component={Home} />
+        <Route exact path="/">
+          <Login />
+        </Route>
+        <Route path="/home">
+          <Header />
+          <Home />
+        </Route>
       </Switch>
     </Router>
   );

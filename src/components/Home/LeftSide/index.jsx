@@ -15,7 +15,7 @@ import { BsFillPersonPlusFill } from 'react-icons/bs';
 import { BsPlus } from 'react-icons/bs';
 import { BsFillBookmarksFill } from 'react-icons/bs';
 
-const LeftSide = () => {
+const LeftSide = ({ userName }) => {
   return (
     <Container>
       <ArtCard>
@@ -23,7 +23,7 @@ const LeftSide = () => {
           <CardBackground />
           <NavLink to="/">
             <Photo />
-            <Link>Welcome, there!</Link>
+            <Link>Welcome, {userName ? userName : 'there'}!</Link>
           </NavLink>
           <NavLink to="/">
             <AddPhotoText>Add a photo</AddPhotoText>

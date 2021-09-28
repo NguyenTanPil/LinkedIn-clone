@@ -1,33 +1,32 @@
 import {
-  ShareBox,
-  Container,
-  Article,
-  ShareActor,
-  Description,
-  ShareImg,
-  SocialCount,
-  SocialAction,
-} from './MainStyles';
-import user from '../../../images/user.svg';
-import { FcOldTimeCamera } from 'react-icons/fc';
-import { FcStart } from 'react-icons/fc';
-import { FcPlanner } from 'react-icons/fc';
-import { FcNook } from 'react-icons/fc';
+  AiFillHeart,
+  AiFillLike,
+  AiFillMessage,
+  AiOutlineLike,
+  AiOutlineMessage,
+} from 'react-icons/ai';
 import { FaEllipsisH } from 'react-icons/fa';
-import { AiFillLike } from 'react-icons/ai';
-import { AiFillHeart } from 'react-icons/ai';
-import { AiFillMessage } from 'react-icons/ai';
-import { AiOutlineLike } from 'react-icons/ai';
-import { AiOutlineMessage } from 'react-icons/ai';
-import { RiShareForwardLine } from 'react-icons/ri';
+import { FcNook, FcOldTimeCamera, FcPlanner, FcStart } from 'react-icons/fc';
 import { FiSend } from 'react-icons/fi';
+import { RiShareForwardLine } from 'react-icons/ri';
 
-const Main = () => {
+import {
+  Article,
+  Container,
+  Description,
+  ShareActor,
+  ShareBox,
+  ShareImg,
+  SocialAction,
+  SocialCount,
+} from './MainStyles';
+
+const Main = ({ user }) => {
   return (
     <Container>
       <ShareBox>
         <div>
-          <img src={user} alt="user" />
+          <img src={user.photo} alt="user" />
           <button>Start a post</button>
         </div>
         <div>
@@ -54,7 +53,7 @@ const Main = () => {
         <Article>
           <ShareActor>
             <span>
-              <img src={user} alt="" />
+              <img src={user.photo} alt="temp" />
               <div>
                 <span>Title</span>
                 <span>Info</span>

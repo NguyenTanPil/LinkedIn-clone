@@ -1,31 +1,69 @@
-import React from 'react';
-import { NavLink } from 'react-router-dom';
-import { AiFillHome } from 'react-icons/ai';
-import { BsPeopleFill } from 'react-icons/bs';
-import { BsBagFill } from 'react-icons/bs';
-import { BsPeopleCircle } from 'react-icons/bs';
-import { RiMessage2Fill } from 'react-icons/ri';
-import { FaBell } from 'react-icons/fa';
-import { AiFillCaretDown } from 'react-icons/ai';
+import { signOut } from 'firebase/auth';
+import { useEffect } from 'react';
+import { AiFillCaretDown, AiFillHome } from 'react-icons/ai';
+import { BsBagFill, BsPeopleCircle, BsPeopleFill } from 'react-icons/bs';
 import { CgMenuGridO } from 'react-icons/cg';
-
+import { FaBell } from 'react-icons/fa';
+import { RiMessage2Fill } from 'react-icons/ri';
+import { useDispatch, useSelector } from 'react-redux';
+import { useHistory } from 'react-router';
+import { NavLink } from 'react-router-dom';
+import {
+  setSignOutState,
+  selectUser,
+  setUserLoginDetial,
+} from '../../features/user/userSlice';
+import { auth } from '../../firebase';
+import logoHome from '../../images/home-logo.svg';
+import searchIcon from '../../images/search-icon.svg';
 import {
   Container,
   Content,
   Logo,
+  Nav,
+  NavList,
+  NavListWrap,
   SearchBox,
   SearchIcon,
-  Nav,
-  NavListWrap,
-  NavList,
+  SignOut,
   User,
   Work,
-  SignOut,
 } from './HeaderStyles';
-import logoHome from '../../images/home-logo.svg';
-import searchIcon from '../../images/search-icon.svg';
+import { onAuthStateChanged } from 'firebase/auth';
 
 const Header = () => {
+  const dispatch = useDispatch();
+  const history = useHistory();
+  const user = useSelector(selectUser);
+
+  const signOutUser = () => {
+    signOut(auth)
+      .then(() => {
+        dispatch(setSignOutState());
+        history.push('/');
+      })
+      .catch((error) => {
+        console.log(error.message);
+      });
+  };
+
+  useEffect(() => {
+    // If logined => current url is /home and setUser
+
+    onAuthStateChanged(auth, async (user) => {
+      if (user) {
+        dispatch(
+          setUserLoginDetial({
+            name: user.displayName,
+            email: user.email,
+            photo: user.photoURL,
+          }),
+        );
+        history.push('/home');
+      }
+    });
+  }, [history, dispatch]);
+
   return (
     <Container>
       <Content>
@@ -77,14 +115,14 @@ const Header = () => {
             </NavList>
             <User>
               <NavLink to="/f">
-                <BsPeopleCircle />
+                {user ? <img src={user.photo} alt="" /> : <BsPeopleCircle />}
                 <span>
                   Me
                   <AiFillCaretDown />
                 </span>
               </NavLink>
 
-              <SignOut>Sign Out</SignOut>
+              <SignOut onClick={signOutUser}>Sign Out</SignOut>
             </User>
             <Work>
               <NavLink to="/g">
