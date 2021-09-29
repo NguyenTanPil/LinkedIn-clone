@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import {
   AiFillHeart,
   AiFillLike,
@@ -9,6 +10,7 @@ import { FaEllipsisH } from 'react-icons/fa';
 import { FcNook, FcOldTimeCamera, FcPlanner, FcStart } from 'react-icons/fc';
 import { FiSend } from 'react-icons/fi';
 import { RiShareForwardLine } from 'react-icons/ri';
+import Post from '../Post';
 
 import {
   Article,
@@ -22,12 +24,21 @@ import {
 } from './MainStyles';
 
 const Main = ({ user }) => {
+  const [showPost, setShowPost] = useState(false);
+
+  const handleClick = (e) => {
+    if (e.target !== e.currentTarget) {
+      return;
+    }
+    setShowPost(!showPost);
+  };
+
   return (
     <Container>
       <ShareBox>
         <div>
           <img src={user.photo} alt="user" />
-          <button>Start a post</button>
+          <button onClick={handleClick}>Start a post</button>
         </div>
         <div>
           <button>
@@ -109,6 +120,7 @@ const Main = ({ user }) => {
           </SocialAction>
         </Article>
       </div>
+      <Post showPost={showPost} handleShowPost={handleClick} />
     </Container>
   );
 };
