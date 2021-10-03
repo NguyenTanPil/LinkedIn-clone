@@ -1,6 +1,16 @@
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
+
+const fadeIn = keyframes`
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+`;
 
 export const Container = styled.div`
+  animation: ${fadeIn} 0.3s ease-out;
   background-color: rgba(0, 0, 0, 0.8);
   color: #000;
   position: fixed;
@@ -123,10 +133,11 @@ export const ShareComment = styled.div`
 `;
 
 export const PostButton = styled.button`
-  background-color: #2977c9;
+  background-color: ${(props) =>
+    props.disabled ? 'rgba(0, 0, 0, 1)' : '#2977c9'};
   border: none;
   border-radius: 2rem;
-  color: #fff;
+  color: ${(props) => (props.disabled ? 'rgba(0, 0, 0, 1)' : '#fff')};
   min-width: 6rem;
   padding-left: 1.6rem;
   padding-right: 1.6rem;
@@ -134,7 +145,8 @@ export const PostButton = styled.button`
   text-transform: capitalize;
 
   &:hover {
-    background-color: #0a66c2;
+    background-color: ${(props) =>
+      props.disabled ? 'rgba(0, 0, 0, 1)' : '#0a66c2'};
   }
 `;
 

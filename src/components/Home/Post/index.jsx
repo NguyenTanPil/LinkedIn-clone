@@ -69,7 +69,9 @@ const Post = ({ showPost, handleShowPost }) => {
                 </AssetButton>
               </ShareComment>
 
-              <PostButton>post</PostButton>
+              <PostButton disabled={!editorText ? true : false}>
+                post
+              </PostButton>
             </ShareCreation>
           </Content>
         </Container>
