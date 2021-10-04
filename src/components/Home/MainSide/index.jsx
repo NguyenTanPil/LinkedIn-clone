@@ -120,7 +120,7 @@ const Main = ({ user }) => {
           </SocialAction>
         </Article>
       </div>
-      <Post showPost={showPost} handleShowPost={handleClick} />
+      <Post showPost={showPost} handleShowPost={handleClick} user={user} />
     </Container>
   );
 };

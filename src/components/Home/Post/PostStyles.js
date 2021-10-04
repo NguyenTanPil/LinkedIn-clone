@@ -169,6 +169,33 @@ export const Editor = styled.div`
     font-size: 1.6rem;
     height: 3.5rem;
     margin-bottom: 2rem;
+    padding-left: 1rem;
+    transition: outline 0.1s ease 0s;
+    width: 100%;
+
+    &:focus {
+      outline-color: #2977c9;
+    }
+  }
+`;
+
+export const UploadImg = styled.div`
+  font-size: 1.6rem;
+  text-align: center;
+
+  &:first-letter {
+    text-transform: uppercase;
+  }
+
+  p {
+    padding: 0.5rem 0;
+  }
+
+  label {
+    cursor: pointer;
+  }
+
+  img {
     width: 100%;
   }
 `;
