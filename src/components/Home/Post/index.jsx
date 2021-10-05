@@ -17,6 +17,10 @@ import {
 import { AiOutlineClose, AiOutlineMessage } from 'react-icons/ai';
 import { MdPhotoSizeSelectActual } from 'react-icons/md';
 import { IoLogoYoutube } from 'react-icons/io';
+import { storage } from '../../../firebase';
+import db from '../../../firebase';
+import { ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage';
+import { collection, addDoc, Timestamp } from 'firebase/firestore';
 
 const Post = ({ showPost, handleShowPost, user }) => {
   const [editorText, setEditorText] = useState('');
@@ -46,6 +50,77 @@ const Post = ({ showPost, handleShowPost, user }) => {
     setVideoLink('');
     setAssetArea('');
     handleShowPost(e);
+  };
+
+  const postAction = (e) => {
+    e.preventDefault();
+    if (e.target !== e.currentTarget) {
+      return;
+    }
+
+    const payload = {
+      image: shareImg,
+      video: videoLink,
+      user: user,
+      description: editorText,
+      timestamp: Timestamp.now(),
+    };
+
+    postArticle(payload);
+    reset(e);
+  };
+
+  const postArticle = async (payload) => {
+    if (payload.image !== '') {
+      const storageRef = ref(storage, `image/${payload.image.name}`);
+      const uploadTask = uploadBytesResumable(storageRef, payload.image);
+
+      uploadTask.on(
+        'state_changed',
+        (snapshot) => {
+          const progress =
+            (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+          console.log('Upload is ' + progress + '% done');
+
+          if (snapshot.state === 'running') {
+            console.log('Upload is ' + progress + '%');
+          }
+        },
+        (error) => {
+          console.log(error.code);
+        },
+        async () => {
+          const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
+          const data = {
+            actor: {
+              description: payload.user.email,
+              title: payload.user.name,
+              date: payload.timestamp,
+              image: payload.user.photo,
+            },
+            video: payload.video,
+            shareImg: downloadURL,
+            comments: 0,
+            description: payload.description,
+          };
+          await addDoc(collection(db, 'articles'), data);
+        },
+      );
+    } else if (payload.video) {
+      const data = {
+        actor: {
+          description: payload.user.email,
+          title: payload.user.name,
+          date: payload.timestamp,
+          image: payload.user.photo,
+        },
+        video: payload.video,
+        shareImg: '',
+        comments: 0,
+        description: payload.description,
+      };
+      await addDoc(collection(db, 'articles'), data);
+    }
   };
 
   return (
@@ -132,7 +207,10 @@ const Post = ({ showPost, handleShowPost, user }) => {
                 </AssetButton>
               </ShareComment>
 
-              <PostButton disabled={!editorText ? true : false}>
+              <PostButton
+                onClick={postAction}
+                disabled={!editorText ? true : false}
+              >
                 post
               </PostButton>
             </ShareCreation>
