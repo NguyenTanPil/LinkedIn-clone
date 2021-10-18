@@ -1,5 +1,13 @@
+import { addDoc, collection, Timestamp } from 'firebase/firestore';
+import { getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage';
 import React, { useState } from 'react';
+import { AiOutlineClose, AiOutlineMessage } from 'react-icons/ai';
+import { IoLogoYoutube } from 'react-icons/io';
+import { MdPhotoSizeSelectActual } from 'react-icons/md';
 import ReactPlayer from 'react-player/youtube';
+import { useDispatch } from 'react-redux';
+import { setLoading } from '../../../features/article/articleSlice';
+import db, { storage } from '../../../firebase';
 import {
   AssetButton,
   AttachAssets,
@@ -14,19 +22,13 @@ import {
   UploadImg,
   UserInfo,
 } from './PostStyles';
-import { AiOutlineClose, AiOutlineMessage } from 'react-icons/ai';
-import { MdPhotoSizeSelectActual } from 'react-icons/md';
-import { IoLogoYoutube } from 'react-icons/io';
-import { storage } from '../../../firebase';
-import db from '../../../firebase';
-import { ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage';
-import { collection, addDoc, Timestamp } from 'firebase/firestore';
 
 const Post = ({ showPost, handleShowPost, user }) => {
   const [editorText, setEditorText] = useState('');
   const [shareImg, setShareImg] = useState('');
   const [videoLink, setVideoLink] = useState('');
   const [assetArea, setAssetArea] = useState('');
+  const dispatch = useDispatch();
 
   const handleOnchange = (e) => {
     const img = e.target.files[0];
@@ -71,6 +73,8 @@ const Post = ({ showPost, handleShowPost, user }) => {
   };
 
   const postArticle = async (payload) => {
+    dispatch(setLoading({ loading: true }));
+
     if (payload.image !== '') {
       const storageRef = ref(storage, `image/${payload.image.name}`);
       const uploadTask = uploadBytesResumable(storageRef, payload.image);
@@ -104,6 +108,7 @@ const Post = ({ showPost, handleShowPost, user }) => {
             description: payload.description,
           };
           await addDoc(collection(db, 'articles'), data);
+          dispatch(setLoading({ loading: false }));
         },
       );
     } else if (payload.video) {
@@ -120,6 +125,7 @@ const Post = ({ showPost, handleShowPost, user }) => {
         description: payload.description,
       };
       await addDoc(collection(db, 'articles'), data);
+      dispatch(setLoading({ loading: false }));
     }
   };
 

@@ -238,3 +238,12 @@ export const SocialAction = styled.div`
     font-weight: 600;
   }
 `;
+
+export const Content = styled.div`
+  text-align: center;
+
+  & > img {
+    width: 10rem;
+    object-fit: cover;
+  }
+`;

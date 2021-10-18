@@ -11,10 +11,12 @@ import { FcNook, FcOldTimeCamera, FcPlanner, FcStart } from 'react-icons/fc';
 import { FiSend } from 'react-icons/fi';
 import { RiShareForwardLine } from 'react-icons/ri';
 import Post from '../Post';
+import loadingGif from '../../../images/loading.gif';
 
 import {
   Article,
   Container,
+  Content,
   Description,
   ShareActor,
   ShareBox,
@@ -22,9 +24,12 @@ import {
   SocialAction,
   SocialCount,
 } from './MainStyles';
+import { selectArticle } from '../../../features/article/articleSlice';
+import { useSelector } from 'react-redux';
 
 const Main = ({ user }) => {
   const [showPost, setShowPost] = useState(false);
+  const article = useSelector(selectArticle);
 
   const handleClick = (e) => {
     if (e.target !== e.currentTarget) {
@@ -38,7 +43,12 @@ const Main = ({ user }) => {
       <ShareBox>
         <div>
           <img src={user.photo} alt="user" />
-          <button onClick={handleClick}>Start a post</button>
+          <button
+            onClick={handleClick}
+            disabled={article.loading ? true : false}
+          >
+            Start a post
+          </button>
         </div>
         <div>
           <button>
@@ -59,8 +69,8 @@ const Main = ({ user }) => {
           </button>
         </div>
       </ShareBox>
-
-      <div>
+      <Content>
+        {article.loading && <img src={loadingGif} alt="" />}
         <Article>
           <ShareActor>
             <span>
@@ -119,7 +129,7 @@ const Main = ({ user }) => {
             </button>
           </SocialAction>
         </Article>
-      </div>
+      </Content>
       <Post showPost={showPost} handleShowPost={handleClick} user={user} />
     </Container>
   );
