@@ -171,9 +171,7 @@ const Post = ({ showPost, handleShowPost, user }) => {
                       onChange={handleOnchange}
                     />
                     <p>
-                      <label htmlFor="upload-img">
-                        select an image to share
-                      </label>
+                      <label htmlFor="upload-img">select an image</label>
                     </p>
                     {shareImg && (
                       <img src={URL.createObjectURL(shareImg)} alt="" />

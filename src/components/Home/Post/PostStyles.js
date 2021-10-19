@@ -182,6 +182,7 @@ export const Editor = styled.div`
 export const UploadImg = styled.div`
   font-size: 1.6rem;
   text-align: center;
+  padding-top: 1rem;
 
   &:first-letter {
     text-transform: uppercase;
@@ -192,7 +193,17 @@ export const UploadImg = styled.div`
   }
 
   label {
+    background-color: #2977c9;
+    border-radius: 2rem;
+    color: #fff;
     cursor: pointer;
+    margin-top: 0.5rem;
+    padding: 0.8rem 1.4rem;
+    transition: opacity 0.2s linear 0s;
+
+    &:hover {
+      opacity: 0.9;
+    }
   }
 
   img {

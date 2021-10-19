@@ -1,4 +1,4 @@
-import { configureStore } from '@reduxjs/toolkit';
+import { configureStore, getDefaultMiddleware } from '@reduxjs/toolkit';
 import userReducer from '../features/user/userSlice';
 import articleReducer from '../features/article/articleSlice';
 import thunk from 'redux-thunk';
@@ -9,5 +9,10 @@ export default configureStore({
     article: articleReducer,
   },
   devTools: process.env.NODE_ENV !== 'production',
-  middlware: [thunk],
+  middleware: [
+    ...getDefaultMiddleware({
+      serializableCheck: false,
+    }),
+    thunk,
+  ],
 });
